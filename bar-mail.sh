@@ -3,7 +3,7 @@
 # COPY THIS FILE TO: /usr/local/bin/bar-mail.sh
 
 # week2date 2023 14 1 ergibt das Datum (DD.MM.) vom Montag der KW 14,
-# weekdate 2023 14 7 liefert das Datum des Sonntags der KW14 zurueck.
+# week2date 2023 14 7 liefert das Datum des Sonntags der KW14 zurueck.
 # siehe https://stackoverflow.com/questions/15606567/unix-date-how-to-convert-week-number-date-w-to-a-date-range-mon-sun
 function week2date () {
 	local year=$1
