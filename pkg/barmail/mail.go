@@ -113,6 +113,6 @@ func GetBarMail() error {
 		dayString += fmt.Sprintf(day, days[i], start.AddDate(0, 0, i).Format("02.01.2006"), eventStrings)
 	}
 
-	println(fmt.Sprintf(mailBody, dayString))
+	fmt.Println(fmt.Sprintf(mailBody, dayString))
 	return nil
 }
