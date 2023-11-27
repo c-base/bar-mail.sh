@@ -33,4 +33,4 @@ TO=uk@c-base.org
 # echo $SUB
 # exit 0
 
-/usr/local/bin/bar-mail-body 2>&1 | mail '-s' "$SUB" '-a' "From: vorstand@c-base.org" ${TO}
+/usr/local/bin/bar-mail-body 2>&1 | mail '-s' "$SUB" '-a' "From: vorstand@c-base.org" '-a' "Content-type: text/plain: charset=UTF-8" ${TO}
