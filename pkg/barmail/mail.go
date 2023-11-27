@@ -12,7 +12,8 @@ import (
 )
 
 const (
-	mailBody = `Im folgenden der Barplan fuer naechste Woche. Wer Schichten uebernehmen
+	weekdayOffset = 1
+	mailBody      = `Im folgenden der Barplan fuer naechste Woche. Wer Schichten uebernehmen
 moechte, moege sich bitte einfach eintragen und den Plan als Antwort
 wieder auf die Liste schicken. Die angegebenen Zeiten dienen der
 Orientierung, ihr koennt sie euch gerne anpassen.
@@ -93,7 +94,7 @@ func GetBarMail() error {
 
 	mapDays := make(map[int][]Event)
 	for _, event := range events {
-		weekday := int(event.Start.Weekday())
+		weekday := int(event.Start.Weekday()) - weekdayOffset
 		if mapDays[weekday] == nil {
 			mapDays[weekday] = []Event{}
 		}
