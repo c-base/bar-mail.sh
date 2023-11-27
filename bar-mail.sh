@@ -27,11 +27,10 @@ SUB="Barplan KW${KW} ${MON}-${SON}${YEAR}"
 
 # UNCOMMENT HERE TO USE THE CORRECT EMAIL ADDR.
 # TO=xxx-xxxx@c-base.org
-TO=xxx@c-base.org
+TO=uk@c-base.org
 
 # UNCOMMENT FOR TESTING WITHOUT SENDING AN EMAIL:
 # echo $SUB
 # exit 0
 
-bar-mail-body | mail '-s' "$SUB" '-a' "From: vorstand@c-base.org" ${TO}
-
+/usr/local/bin/bar-mail-body 2>&1 | mail '-s' "$SUB" '-a' "From: vorstand@c-base.org" ${TO}
