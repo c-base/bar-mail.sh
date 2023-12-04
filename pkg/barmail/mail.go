@@ -48,6 +48,7 @@ var days = map[int]string{
 type receivedEvents struct {
 	Events   []Event `json:"c_base_events"`
 	Regulars []Event `json:"c_base_regulars"`
+	Seminars []Event `json:"c_base_seminars"`
 }
 
 type Event struct {
@@ -57,7 +58,7 @@ type Event struct {
 }
 
 func (re *receivedEvents) events() []Event {
-	return append(re.Events, re.Regulars...)
+	return append(append(re.Events, re.Regulars...), re.Seminars...)
 }
 
 func GetBarMail() error {
