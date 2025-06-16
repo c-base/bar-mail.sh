@@ -5,7 +5,9 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"os"
 	"sort"
+	"strings"
 	"time"
 
 	"github.com/jinzhu/now"
@@ -46,9 +48,9 @@ var days = map[int]string{
 }
 
 type receivedEvents struct {
-	Events   []Event `json:"c_base_events"`
-	Regulars []Event `json:"c_base_regulars"`
-	Seminars []Event `json:"c_base_seminars"`
+	Events   []RawEvent `json:"c_base_events"`
+	Regulars []RawEvent `json:"c_base_regulars"`
+	Seminars []RawEvent `json:"c_base_seminars"`
 }
 
 type Event struct {
@@ -57,8 +59,44 @@ type Event struct {
 	Start       time.Time `json:"start"`
 }
 
+type RawEvent struct {
+	Description string `json:"description"`
+	Title       string `json:"title"`
+	Start       string `json:"start"`
+}
+
+func (re *RawEvent) toEvent() (Event, error) {
+	if !strings.Contains(re.Start, "T") {
+		// Most likely an all day event, setting start time to midnight...
+		re.Start = re.Start + "T00:00:00+02:00"
+	}
+
+	event := Event{
+		Description: re.Description,
+		Title:       re.Title,
+	}
+
+	startTime, err := time.Parse(time.RFC3339, re.Start)
+	if err != nil {
+		return Event{}, err
+	}
+
+	event.Start = startTime
+
+	return event, nil
+}
+
 func (re *receivedEvents) events() []Event {
-	return append(append(re.Events, re.Regulars...), re.Seminars...)
+	rawEvents := append(append(re.Events, re.Regulars...), re.Seminars...)
+	events := make([]Event, len(rawEvents))
+	for i, re := range rawEvents {
+		event, err := re.toEvent()
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "failed parsing time for event: %s\n", re.Title)
+		}
+		events[i] = event
+	}
+	return events
 }
 
 func GetBarMail() error {
