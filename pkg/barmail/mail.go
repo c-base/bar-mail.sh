@@ -67,7 +67,8 @@ type RawEvent struct {
 
 func (re *RawEvent) toEvent() (Event, error) {
 	if !strings.Contains(re.Start, "T") {
-		re.Start = re.Start + "T19:00:00+02:00"
+		// Most likely an all day event, setting start time to midnight...
+		re.Start = re.Start + "T00:00:00+02:00"
 	}
 
 	event := Event{
